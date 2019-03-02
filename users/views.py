@@ -11,21 +11,6 @@ from posts.models import Post
 # Create your views here.
 
 
-class LoginFormView(FormView):
-    form_class = AuthenticationForm
-    template_name = "users/login.html"
-
-    def post(self, request, *args, **kwargs):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('posts:list')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
-
-
 class SignUpView(CreateView):
     model = User
     template_name = "users/user_form.html"
@@ -61,5 +46,6 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         """Add user's posts to context."""
         context = super().get_context_data(**kwargs)
         user = self.get_object()
-        context['posts'] = Post.objects.filter(user=user).order_by('-created_at')
+        context['posts'] = Post.objects.filter(
+            user=user).order_by('-created_at')
         return context
