@@ -1,17 +1,21 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from posts.models import Post
 from posts.forms import PostForm
 from django.urls import reverse_lazy
 # Create your views here.
 
+
 class PostListView(LoginRequiredMixin, ListView):
     model = Post
+    ordering = ('-created_at',)
+    paginate_by = 30
 
-    def get_queryset(self):
-        super(PostListView, self).get_queryset()
-        return self.model.objects.all().order_by('-created_at')
+
+class PostDetailView(LoginRequiredMixin, DetailView):
+    model = Post
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
