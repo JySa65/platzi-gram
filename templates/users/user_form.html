@@ -1,0 +1,34 @@
+{% extends "users/base.html" %}
+
+{% block head_content %}
+<title>Platzigram Sign Up</title>
+{% endblock%}
+
+{% block container %}
+
+{% if form.errors %}
+<p class="alert alert-danger">
+    {% for field in form %}
+        {% if field.errors %}
+            {{ field.label }}:
+            {% for error in field.errors %}
+                {{ error }} <br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</p>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    {% for i in form %}
+        <div class="form-group">
+        {{ i }}
+        </div>
+    {% endfor %}
+    <button class="btn btn-primary btn-block mt-5" type="submit">Register!</button>
+
+</form>
+
+{% endblock %}
